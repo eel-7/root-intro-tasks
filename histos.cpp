@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 
+#include "TFitResultPtr.h"
 #include "TH1.h"
 #include "TRandom.h"
 #include "TCanvas.h"
@@ -43,6 +44,10 @@ int main(int argc, char** argv) {
     }
 
     h1->Draw();
+    TFitResultPtr r = h1->Fit("gaus", "S");
+
+    Double_t par0 = r->GetParameter(0);
+
 
     S->Print(outFileAdd);
 
