@@ -3,10 +3,16 @@
 #include <string>
 
 #include "TFitResultPtr.h"
+#include "TFitResult.h"
 #include "TH1.h"
+#include "TF1.h"
+#include "TLegend.h"
+#include "TPad.h"
 #include "TRandom.h"
 #include "TCanvas.h"
+#include "TLatex.h"
 
+#define DEBUG
 
 
 int main(int argc, char** argv) {
@@ -46,7 +52,32 @@ int main(int argc, char** argv) {
     h1->Draw();
     TFitResultPtr r = h1->Fit("gaus", "S");
 
-    Double_t par0 = r->GetParameter(0);
+    TF1 *f1 = h1->GetFunction("gaus");
+
+    TLegend *leg = new TLegend(0.12, 0.75, 0.30, 0.9);
+
+    leg->AddEntry(h1, "Histogram");
+    leg->AddEntry(f1, "Fit");
+
+    leg->Draw();
+
+    Double_t constant = r->Parameter(0);
+    Double_t mean = r->Parameter(1);
+    Double_t stddev = r->Parameter(2);
+
+    Double_t constant_error = r->ParError(0);
+    Double_t mean_error = r->ParError(1);
+    Double_t stddev_error = r->ParError(2);
+
+    TLatex latex;
+    latex.SetNDC();
+    latex.SetTextAlign(11);
+
+#ifdef DEBUG
+    std::cout << "[DEBUG] par0 = " << r->Parameter(0) << std::endl;
+    std::cout << "[DEBUG] par1 = " << r->Parameter(1) << std::endl;
+    std::cout << "[DEBUG] par2 = " << r->Parameter(2) << std::endl;
+#endif
 
 
     S->Print(outFileAdd);
