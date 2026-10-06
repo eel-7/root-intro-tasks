@@ -3,6 +3,7 @@
 # variables
 outDir="out"
 outFile="histograms.pdf"
+outFileGraph="graph.pdf"
 
 mkdir -p $outDir
 
@@ -10,4 +11,4 @@ mkdir -p $outDir
 g++ -o Histos histos.cpp `root-config --cflags --glibs` || { echo "Error compiling histos.cpp"; exit 1; }
 
 # run code
-./Histos "${outDir}/${outFile}"
+./Histos "${outDir}/${outFile}" "${outDir}/${outFileGraph}"
