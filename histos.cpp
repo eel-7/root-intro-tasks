@@ -14,6 +14,8 @@
 #include "TLatex.h"
 #include "TGraphErrors.h"
 #include "TAxis.h"
+#include "TGaxis.h"
+#include "TStyle.h"
 
 #define DEBUG
 
@@ -42,7 +44,15 @@ int main(int argc, char** argv) {
     sprintf(outFileAdd, "%s", filename.c_str());
     sprintf(outFileGraph, "%s", filename_graph.c_str());
 
+    gStyle->SetTitleSize(0.04,"xyz");
+    gStyle->SetLabelSize(0.04,"xyz");
+    gStyle->SetTitleOffset(1.1,"x");
+
+    TGaxis::SetMaxDigits(3);
+
     TCanvas *S = new TCanvas();
+
+    S->SetLeftMargin(0.10);
 
     S->Print(outFileOpen);
 
@@ -73,6 +83,8 @@ int main(int argc, char** argv) {
         for (int i=0; i<N; ++i) {
             h1->Fill(gRandom->Gaus(-1, 5));
         }
+
+        h1->SetTitle(";x;Counts");
 
         h1->Draw();
         TFitResultPtr r = h1->Fit("gaus", "S");
